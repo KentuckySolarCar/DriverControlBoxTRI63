@@ -59,7 +59,7 @@
 #define LIGHT_HIGH		0x10
 #define LIGHT_LOW		0x20
 #define LIGHT_PARK		0x40
-#define BRAKE_2			0x80
+#define REGEN			0x80
 #define P4_UNUSED		0x00
 
 // Port 5
@@ -93,9 +93,12 @@
 #define STATE_2_C		0x06				// 11
 #define STATE_2_D		0x02 				// 01
 
+#define CRUISE_STEP		1
+
 // Pushbutton switch states
 #define PUSHED			1
 #define RELEASED		0
+#define BOUNCECNT       3
 
 // Indicator (flasher) LED blink states
 #define BLINK_SET		2
@@ -107,7 +110,7 @@
 
 // Event timing
 #define INPUT_CLOCK		4000000				// Hz
-#define TICK_RATE		100					// Hz
+#define TICK_RATE		100 				// Hz
 #define BLINK_SPEED		33					// Number of ticks per event: 33*2 = 1.5 Hz = 90 flashes/min (Aust Design Rule 13-00)
 #define COMMS_SPEED		10					// Number of ticks per event: 100ms = 10 Hz
 #define ACTIVITY_SPEED	2					// Number of ticks to blink CAN activity LED, per trigger event
@@ -116,12 +119,12 @@
 // Control parameters
 #define MAX_CURRENT		1.0					// %, absolute value
 #define MIN_CURRENT		0.0					// %, absolute value
-#define MAX_VELOCITY_F	100					// Forwards max speed, metres/second (100m/s = 360km/h)
-#define MAX_VELOCITY_R	-10					// Reverse max speed, m/s
+#define MAX_VELOCITY_F	100.0					// Forwards max speed, metres/second (100m/s = 360km/h)
+#define MAX_VELOCITY_R	-10.0					// Reverse max speed, m/s
 
 // ADC scaling parameters - 12 bit ADC (4096 counts)
-#define ADC_MIN			100					// Below this value counts as 0%, to make sure that off is really OFF
-#define ADC_MAX			3600				// Above this value counts as 100%
+#define ADC_MIN			0x0270					// Below this value counts as 0%, to make sure that off is really OFF
+#define ADC_MAX			0x0E90  				// Above this value counts as 100%
 
 // Typedefs for quickly joining multiple bytes/ints/etc into larger values
 // These rely on byte ordering in CPU & memory - i.e. they're not portable across architectures

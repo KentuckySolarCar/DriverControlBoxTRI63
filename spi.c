@@ -42,8 +42,8 @@ void spi_init( unsigned char clock )
 {
 	P3SEL |= CAN_MOSI | CAN_MISO | CAN_SCLK;	// Set pins to peripheral function, not GPIO
 	U0CTL = CHAR | SYNC | MM | SWRST;			// 8-bit, SPI, Master
-	if( clock == 0 ) U0TCTL = SSEL_2 | STC;	// Mode 0:0, BRCLK = SMCLK, 3-wire Mode
-	else U0TCTL = SSEL_1 | STC;				// Mode 0:0, BRCLK = ACLK, 3-wire Mode
+	if( clock == 0 ) U0TCTL = SSEL1 | STC;	// Mode 0:0, BRCLK = SMCLK, 3-wire Mode
+	else U0TCTL = SSEL0 | STC;				// Mode 0:0, BRCLK = ACLK, 3-wire Mode
 	U0BR0 = 0x02;								// SPICLK = BRCLK/2
 	U0BR1 = 0x00;
 	U0MCTL = 0x00;								// No modulation
