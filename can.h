@@ -1,6 +1,6 @@
 /*
  * Tritium MCP2515 CAN interface header
- * Copyright (c) 2006, Tritium Pty Ltd.  All rights reserved.
+ * Copyright (c) 2008, Tritium Pty Ltd.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification, 
  * are permitted provided that the following conditions are met:
@@ -18,7 +18,7 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY 
  * OF SUCH DAMAGE. 
  *
- * Last Modified: J.Kennedy, Tritium Pty Ltd, 18 December 2006
+ * Last Modified: J.Kennedy, Tritium Pty Ltd, 18 November 2008
  *
  * - Implements the following CAN interface functions
  *	- can_init
@@ -57,23 +57,24 @@ void 					can_mod( unsigned char address, unsigned char mask, unsigned char data
 #define can_deselect	P3OUT |= CAN_nCS
 
 // Device serial number
-#define DEVICE_SERIAL	0x00000001
+#define DEVICE_SERIAL	0001
 
 // Motor controller CAN base address and packet offsets
-#define	MC_CAN_BASE1		0x0400
-#define MC_CAN_BASE2		0x0420
+#define	MC_CAN_BASE		0x0400
 #define MC_LIMITS		0x01
 #define	MC_BUS			0x02
 #define MC_VELOCITY		0x03
 #define MC_PHASE		0x04
 #define MC_V_VECTOR		0x05
 #define MC_I_VECTOR		0x06
-#define MC_RAIL_1		0x07
-#define MC_RAIL_2		0x08
-#define MC_FAN			0x09
-#define MC_TEMP1		0x0A
-#define MC_TEMP2		0x0B
-#define MC_TEMP3		0x0C
+#define MC_BEMF			0x07
+#define MC_RAIL_1		0x08
+#define MC_RAIL_2		0x09
+#define MC_FAN			0x0A
+#define MC_TEMP1		0x0B
+#define MC_TEMP2		0x0C
+#define MC_TEMP3		0x0D
+#define MC_CUMULATIVE	0x0E
 
 // Driver controls CAN base address and packet offsets
 #define DC_CAN_BASE		0x0500
@@ -93,7 +94,7 @@ void 					can_mod( unsigned char address, unsigned char mask, unsigned char data
 #define SW_LIGHT_HIGH	0x0001
 #define SW_LIGHT_LOW	0x0002
 #define SW_LIGHT_PARK	0x0004
-#define SW_REGEN		0x0008
+#define SW_BRAKE_2		0x0008
 #define SW_BRAKE_1		0x0010
 #define SW_REVERSE		0x0020
 #define SW_IGN_ON		0x0040
@@ -105,17 +106,9 @@ void 					can_mod( unsigned char address, unsigned char mask, unsigned char data
 #define SW_ENC1_SW		0x1000
 #define SW_ENC2_SW		0x2000
 #define SW_DEBUG		0x4000
-
 // Driver controls switch position packet bitfield positions (upper 16 bits)
 #define SW_BLINK_L		0x0001
 #define SW_BLINK_R		0x0002
-
-// BPS base address and packet offsets
-#define BP_CAN_BASE 	0x580		// High = CAN1_SERIAL Number        Low = "BPS1" string                 P=10s
-#define BP_VMAX	 		0x01		// High = Max. Voltage Cell Num.    Low = Max. Voltage Value            P=10s
-#define BP_VMIN 		0x02		// High = Min. Voltage Cell Num.    Low = Min. Voltage Value            P=10s
-#define BP_TMAX 		0x03		// High = Max. Temperature Cell     Low = Max. Temperature Value        P=10s
-#define BP_PCDONE 		0x04		// High = TBD						Low = TBD							P=When Ready
 
 // MCP2515 command bytes
 #define MCP_RESET		0xC0

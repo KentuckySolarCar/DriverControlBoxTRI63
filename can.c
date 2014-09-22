@@ -47,9 +47,7 @@ unsigned char 			buffer[16];
  * Initialises MCP2515 CAN controller
  *	- Resets MCP2515 via SPI port (switches to config mode, clears errors)
  *	- Changes CLKOUT to /4 rate (4 MHz)
- *	- Sets up bit timing
- *      - originally 1 Mbit operation
- *      - modified for 250 kbps operation (buffer[2] setting below)
+ *	- Sets up bit timing for 1 Mbit operation
  *	- Sets up receive filters and masks
  *		- Rx Filter 0 = Motor controller velocity
  *		- Rx Filter 1 = Unused
@@ -71,8 +69,10 @@ void can_init( void )
 	// Set up bit timing & interrupts
 	buffer[0] = 0x02;						// CNF3 register: PHSEG2 = 3Tq, No wakeup, CLKOUT = CLK
 	buffer[1] = 0xC9;						// CNF2 register: set PHSEG2 in CNF3, Triple sample, PHSEG1= 2Tq, PROP = 2Tq
-//	buffer[2] = 0x00;						// CNF1 register: SJW = 1Tq, BRP = 0 > 1Mbps
-	buffer[2] = 0x03;						// CNF1 register: SJW = 1Tq, BRP = 3 > 250 kbps
+	buffer[2] = 0x00;						// CNF1 register: SJW = 1Tq, BRP = 0
+//	buffer[0] = 0x05;						// 250 kbps settings
+//	buffer[1] = 0xF1;						// 250 kbps settings
+//	buffer[2] = 0x01;						// 250 kbps settings
 	buffer[3] = 0x23;						// CANINTE register: enable ERROR, RX0 & RX1 interrupts on IRQ pin
 	buffer[4] = 0x00;						// CANINTF register: clear all IRQ flags
 	buffer[5] = 0x00;						// EFLG register: clear all user-changable error flags
@@ -80,13 +80,13 @@ void can_init( void )
 	
 	// Set up receive filtering & masks
 	// RXF0 - Buffer 0
-	buffer[ 0] = (unsigned char)((MC_CAN_BASE1 + MC_VELOCITY) >> 3);
-	buffer[ 1] = (unsigned char)((MC_CAN_BASE1 + MC_VELOCITY) << 5);
+	buffer[ 0] = (unsigned char)((MC_CAN_BASE + MC_VELOCITY) >> 3);
+	buffer[ 1] = (unsigned char)((MC_CAN_BASE + MC_VELOCITY) << 5);
 	buffer[ 2] = 0x00;
 	buffer[ 3] = 0x00;
 	// RXF1 - Buffer 0
-	buffer[ 4] = (unsigned char)((BP_CAN_BASE + BP_PCDONE) >> 3);
-	buffer[ 5] = (unsigned char)((BP_CAN_BASE + BP_PCDONE) << 5);
+	buffer[ 4] = 0x00;
+	buffer[ 5] = 0x00;
 	buffer[ 6] = 0x00;
 	buffer[ 7] = 0x00;
 	// RXF2 - Buffer 1
@@ -114,12 +114,12 @@ void can_init( void )
 	can_write( RXF3SIDH, &buffer[0], 12 );
 
 	// RXM0 - Buffer 0
-	buffer[ 0] = 0xFB;		// Match entire 11 bit ID (ID is left-justified in 32-bit mask register)
-	buffer[ 1] = 0xE0;		// Match upper 5 and lower 5 bits
+	buffer[ 0] = 0xFF;						// Match entire 11 bit ID (ID is left-justified in 32-bit mask register)
+	buffer[ 1] = 0xE0;
 	buffer[ 2] = 0x00;
 	buffer[ 3] = 0x00;
 	// RXM1 - Buffer 1
-	buffer[ 4] = 0xFC;		// Match upper 6 bits of ID - don't care about lower 5 bits (block address)
+	buffer[ 4] = 0xFC;						// Match upper 6 bits of ID - don't care about lower 5 bits (block address)
 	buffer[ 5] = 0x00;
 	buffer[ 6] = 0x00;
 	buffer[ 7] = 0x00;
