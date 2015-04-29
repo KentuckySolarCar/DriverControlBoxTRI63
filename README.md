@@ -8,4 +8,7 @@ So far we are using only this
 
  gcc-msp430                         - GNU C compiler (cross compiler for MSP430) 
 
-sudo apt-get gcc-msp430
+sudo apt-get install gcc-msp430
+
+Also grab the memory.x and periph.x files for the processor you have
+cp /usr/msp430/lib/ldscripts/msp430f135/periph.x  ~/projects/drivercontrol/build/

@@ -1,0 +1,3 @@
+tri63.o: tri63.c tri63.h can.h spi.h
+spi.o: spi.c tri63.h spi.h
+can.o: can.c tri63.h can.h spi.h
