@@ -1,6 +1,8 @@
 DriverControlBoxTRI63
 =====================
 
+![Drivers Control Box (tri63)](img/device.JPG)
+
 This is the code downloaded from the Tritium website (http://tritium.com.au/products/legacy-products/) on September 17 2014.
 
 We build this on a ubuntu system. The package manager work fine
@@ -20,3 +22,7 @@ i63.elf test.hex
 
 C:\Users\local_admin\Desktop\del\DriverControlBoxTRI63>"C:\Program Files (x86)\G
 nuWin32\bin\make.exe"
+
+
+The image below shows how we attempted to program the device.
+![Drivers Control Box (tri63)](img/prgSetUp.JPG)
